@@ -9,9 +9,9 @@ import processing.core.PApplet;
 import processing.core.PFont;
 
 public class ProcessingGame extends PApplet{
-	String host = "ast1.itp-redial.com";
+	String host = "your-host.com";
 	int port = 12002;
-	String phoneNumber = "1(360)516-2008";
+	String phoneNumber = "1(999)888-7777";
 	TinyphoneClient tp;
 	ArrayList<Caller> callers = new ArrayList<Caller>();
 	public void setup(){

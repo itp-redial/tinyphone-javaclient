@@ -33,6 +33,7 @@ public class SimpleApp {
 	}
 	
 	public static void main(String[] args){
-		SimpleApp sa = new SimpleApp("ast1.itp-redial.com",12002,"13605162008");
+		//params are host, port, phone number
+		SimpleApp sa = new SimpleApp("your-host.com",12002,"1(999)888-7777");
 	}
 }
