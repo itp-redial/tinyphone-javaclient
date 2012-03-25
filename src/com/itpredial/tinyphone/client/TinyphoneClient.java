@@ -20,7 +20,8 @@ public class TinyphoneClient extends Thread {
 	public TinyphoneClient(Object parent,String host, int port, String phoneNumber){
 		try {
 			this.parent = parent;
-			this.phoneNumber = phoneNumber;
+			//clean out any number formatting
+			this.phoneNumber = phoneNumber.replaceAll("[\\s\\(\\)-]", "");
 			client = new Socket(host, port);
 			outToServer = new DataOutputStream(client.getOutputStream());
 			inFromServer = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -102,6 +103,7 @@ public class TinyphoneClient extends Thread {
 	         }
 	         catch (Throwable e) {
 	        	 if (required){
+	        		 System.err.println("missing required method "+methodName+"(TinyphoneEvent event)");
 	        		 System.err.println(e);
 	        	 }
 	         }
