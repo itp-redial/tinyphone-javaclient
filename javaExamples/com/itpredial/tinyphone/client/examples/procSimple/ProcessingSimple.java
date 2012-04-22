@@ -4,14 +4,13 @@ import java.util.ArrayList;
 
 import com.itpredial.tinyphone.client.TinyphoneClient;
 import com.itpredial.tinyphone.client.TinyphoneEvent;
-
 import processing.core.PApplet;
 import processing.core.PFont;
 
 public class ProcessingSimple extends PApplet{
-	String host = "your-host.com";
+	String host = "ast1.itp-redial.com";
 	int port = 12002;
-	String phoneNumber = "1(999)888-7777";
+	String phoneNumber = "1(360)989-1290";
 	TinyphoneClient tp;
 	ArrayList<Caller> callers = new ArrayList<Caller>();
 	public void setup(){
@@ -35,13 +34,26 @@ public class ProcessingSimple extends PApplet{
 	}
 	
 	void drawCallers(Caller caller, int order){
-		text(caller.phoneNumber+" ("+caller.label+")",50,30*order+20);
-		text(caller.lastKeypress,20,30*order+30);
-		rect(40,30*order+20,200*caller.audioLevel,10);
+		text(caller.phoneNumber+" ("+caller.label+")",50,45*order+20);
+		text(caller.lastKeypress,20,45*order+30);
+		//display args, if they exist
+		if (caller.getArgs() != null){
+			String[] callArgs = caller.getArgs();
+			String argsString = "[";
+			for(int i = 0; i < callArgs.length;i++){
+				argsString += callArgs[i]+", ";
+			}
+			argsString = argsString.substring(0,argsString.length()-2)+"]";
+			text(argsString,20, 45*order+45);
+		}
+		rect(40,45*order+20,200*caller.audioLevel,10);
 	}
+	
 	//called by tinyphone client when there's a new caller (required)
 	public void newCallerEvent(TinyphoneEvent event){
-		Caller caller = new Caller(event.getId(), event.getCallerNumber());
+		Caller caller = new Caller(event.getId(), event.getCallerNumber(), event.getCallerLabel());
+		//sending arguments is optional, so there may not be any with the call.
+		caller.setArgs(event.getArgs());
 		synchronized(callers){
 			callers.add(caller);
 		}

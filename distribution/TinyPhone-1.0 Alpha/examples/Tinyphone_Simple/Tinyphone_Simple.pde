@@ -1,11 +1,11 @@
 import com.itpredial.tinyphone.client.*;
 
 //add TinyPhone's host name or IP address here
-String host = "change-to-your-host.com";
+String host = "your-host-here.com";
 //change to TinyPhone's port
 int port = 12002;
 //change the phone number to the one that you're using.
-String phoneNumber = "1(999)999-9999";
+String phoneNumber = "1(360)999-9999";
 
 TinyphoneClient tp;
 ArrayList<Caller> callers = new ArrayList<Caller>();
@@ -30,13 +30,24 @@ void draw() {
 }
 
 void drawCallers(Caller caller, int order) {
-  text(caller.phoneNumber+" ("+caller.label+")", 50, 30*order+20);
-  text(caller.lastKeypress, 20, 30*order+30);
-  rect(40, 30*order+20, 200*caller.audioLevel, 10);
+  text(caller.phoneNumber+" ("+caller.label+")", 50, 45*order+20);
+  text(caller.lastKeypress, 20, 45*order+30);
+  //display args, if they exist
+  if (caller.getArgs() != null) {
+    String[] callArgs = caller.getArgs();
+    String argsString = "[";
+    for (int i = 0; i < callArgs.length;i++) {
+      argsString += callArgs[i]+", ";
+    }
+    argsString = argsString.substring(0, argsString.length()-2)+"]";
+    text(argsString, 20, 45*order+45);
+  }
+  rect(40, 45*order+20, 200*caller.audioLevel, 10);
 }
 //called by tinyphone client when there's a new caller (required)
 public void newCallerEvent(TinyphoneEvent event) {
-  Caller caller = new Caller(event.getId(), event.getCallerNumber());
+  Caller caller = new Caller(event.getId(), event.getCallerNumber(), event.getCallerLabel());
+  caller.setArgs(event.getArgs());
   synchronized(callers) {
     callers.add(caller);
   }
@@ -83,4 +94,3 @@ public void hangupEvent(TinyphoneEvent event) {
     }
   }
 }
-

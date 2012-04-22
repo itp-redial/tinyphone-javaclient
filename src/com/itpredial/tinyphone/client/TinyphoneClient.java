@@ -36,7 +36,7 @@ public class TinyphoneClient extends Thread {
 	public String getPhoneNumber(){
 		return phoneNumber;
 	}
-	
+
 	public void run(){
 		boolean looping = true;
 		try {
@@ -89,26 +89,41 @@ public class TinyphoneClient extends Thread {
 
 	private void handleNewCaller(TinyphoneEvent event) {
 		String[] kv = event.getValue().split("\\|");
-		event.setCallerNumber(kv[0]);
+		String callerNumber = kv[0];
+		event.setCallerNumber(callerNumber);
+		//create caller label, which can be used for privacy
+		if (callerNumber.length()>7){
+			int start = callerNumber.length()-7;
+			StringBuilder sb = new StringBuilder(callerNumber);
+			sb.replace(start, start+3, "xxx");
+			event.setCallerLabel(sb.toString());
+		}
+		if (kv.length > 1){
+			String[] args = new String[kv.length-1];
+			for (int i = 1; i < kv.length; i++) {
+				args[i-1]=kv[i];
+			}
+			event.setArgs(args);
+		}
 		invokeMethod("newCallerEvent", event,true);
 	}
-	
+
 	private void invokeMethod(String methodName, TinyphoneEvent event, boolean required){
 		try {
-	           Class cls = parent.getClass();
-	           Class partypes[] = {TinyphoneEvent.class};
-	            Method meth = cls.getMethod(methodName, partypes);
-	            Object arglist[] = {event};
-	            meth.invoke(parent, arglist);
-	         }
-	         catch (Throwable e) {
-	        	 if (required){
-	        		 System.err.println("missing required method "+methodName+"(TinyphoneEvent event)");
-	        		 System.err.println(e);
-	        	 }
-	         }
+			Class cls = parent.getClass();
+			Class partypes[] = {TinyphoneEvent.class};
+			Method meth = cls.getMethod(methodName, partypes);
+			Object arglist[] = {event};
+			meth.invoke(parent, arglist);
+		}
+		catch (Throwable e) {
+			if (required){
+				System.err.println("missing required method "+methodName+"(TinyphoneEvent event)");
+				System.err.println(e);
+			}
+		}
 	}
-	
+
 	//FROM SERVER: {"id":"1331862623.194","event":"new_call","value":"6466429290|13605162008"}
 	//FROM SERVER: {"id":"1331862623.194","event":"audio_level","value":"0"}
 	//FROM SERVER: {"id":"1331862623.194","event":"hangup","value":"1"}

@@ -1,6 +1,6 @@
 import com.itpredial.tinyphone.client.*;
 //add TinyPhone's host name or IP address here
-String host = "change-to-your-host.com";
+String host = "your-host-here.com";
 //change to TinyPhone's port
 int port = 12002;
 //change the phone number to the one that you're using.
@@ -31,7 +31,7 @@ void draw() {
 
 //called by tinyphone client when there's a new caller (required)
 public void newCallerEvent(TinyphoneEvent event) {
-  Caller caller = new Caller(event.getId(), event.getCallerNumber());
+  Caller caller = new Caller(event.getId(), event.getCallerNumber(), event.getCallerLabel());
   synchronized(callers) {
     callers.add(caller);
   }

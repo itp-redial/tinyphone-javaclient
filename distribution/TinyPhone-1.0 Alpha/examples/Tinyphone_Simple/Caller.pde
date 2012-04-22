@@ -1,23 +1,26 @@
 class Caller {
-  String phoneNumber;
   String label;
+  String phoneNumber;
   String uniqueID;
   float audioLevel;
+  String[] args;
   String lastKeypress="?";
 
-  public Caller(String uniqueID, String phoneNumber) {
+  public Caller(String uniqueID, String callerNumber, String callerLabel) {
     this.uniqueID = uniqueID;
-    this.phoneNumber = phoneNumber;
-    if (phoneNumber.length()>7) {
-      int start = phoneNumber.length()-7;
-      StringBuilder sb = new StringBuilder(phoneNumber);
-      sb.replace(start, start+3, "xxx");
-      label = sb.toString();
-    }
+    this.phoneNumber = callerNumber;
+    this.label = callerLabel;
   }
 
   public boolean isCaller(String checkID) {
     return uniqueID.equals(checkID);
   }
-}
 
+  public String[] getArgs() {
+    return args;
+  }
+
+  public void setArgs(String[] args) {
+    this.args = args;
+  }
+}

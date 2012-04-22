@@ -5,19 +5,14 @@ class Caller {
   float audioLevel;
   private PVector velocity = new PVector(0, 0);
   private PVector location;
-  public Caller(String uniqueID, String phoneNumber) {
+  public Caller(String uniqueID, String phoneNumber, String callerLabel) {
     //start more or less in the middle of the screen
     int startX = (width/4)+(int)random(width/2);
     int startY = (height/4)+(int)random(height/2);
     location = new PVector(startX, startY);
     this.uniqueID = uniqueID;
     this.phoneNumber = phoneNumber;
-    if (phoneNumber.length()>7) {
-      int start = phoneNumber.length()-7;
-      StringBuilder sb = new StringBuilder(phoneNumber);
-      sb.replace(start, start+3, "xxx");
-      label = sb.toString();
-    }
+    this.label = callerLabel;
   }
 
 void calc() {

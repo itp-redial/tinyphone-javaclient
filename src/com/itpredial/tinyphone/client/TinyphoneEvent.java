@@ -5,6 +5,8 @@ public class TinyphoneEvent {
 	public enum EventType {NEW_CALLER,AUDIO_LEVEL,KEYPRESS,HANGUP}
 	String id;
 	String callerNumber;
+	String callerLabel;
+	String[] args;
 	EventType eventType;
 	String value;
 	/**
@@ -26,6 +28,23 @@ public class TinyphoneEvent {
 	public String getCallerNumber() {
 		return callerNumber;
 	}
+	
+	public void setArgs(String[] args){
+		this.args = args;
+	}
+	
+	public String[] getArgs(){
+		return args;
+	}
+	
+	public void setCallerLabel(String label){
+		callerLabel = label;
+	}
+	
+	public String getCallerLabel(){
+		return callerLabel;
+	}
+	
 	/**
 	 * @param callerNumber the callerNumber to set
 	 */
@@ -77,7 +96,16 @@ public class TinyphoneEvent {
 	public String toString(){
 		String str = "Tinyphone Event "+eventType+": id="+id;
 		if (eventType.equals(EventType.NEW_CALLER)){
-			str += ", caller Number="+callerNumber;
+			str += "\n   caller Number="+callerNumber;
+			str += ", caller Label="+callerLabel+"\n";
+			if (args != null){
+				str +="   args=[";
+				for (int i = 0; i < args.length; i++) {
+					str +="\""+args[i]+"\",";
+				}
+				str = str.substring(0,str.length()-1);
+				str +="]";
+			}
 		} else {
 			str +=", value="+value;
 		}
