@@ -75,5 +75,9 @@ The Tinyphone Java/Processing library uses Java Reflection to trigger call event
    - String callerLabel: An obscured version of the caller's phone number, suitable for display.
    - String[] args: any arguments that were passed from the tinyphone server.
  - public void keypressEvent(TinyphoneEvent event)
+  - value: key pressed by caller.  Value will be 0-9, #, or *
  - public void audioLevelEvent(TinyphoneEvent event)
+  - value: loudness of caller.  Value will be a number 0-32768.
+  - Audio level events must be enabled in the Asterisk dial plan.  If enabled, they will trigger about 15 times a second.
  - public void hangupEvent(TinyphoneEvent event)
+  - The caller has hung up the phone.  You may want to remove the caller from your app at this point.
