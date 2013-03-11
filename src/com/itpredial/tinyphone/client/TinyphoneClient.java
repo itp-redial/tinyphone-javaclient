@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.Socket;
+import java.net.URLDecoder;
 import java.net.UnknownHostException;
 
 import com.itpredial.tinyphone.client.TinyphoneEvent.EventType;
@@ -32,7 +34,7 @@ public class TinyphoneClient extends Thread {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public String getPhoneNumber(){
 		return phoneNumber;
 	}
@@ -62,6 +64,7 @@ public class TinyphoneClient extends Thread {
 					case AUDIO_LEVEL: handleAudioLevel(event);break;
 					case KEYPRESS: handleKeypress(event);break;
 					case HANGUP: handleHangup(event);break;
+					case SMS: handleSMS(event);break;
 					}
 					//System.out.println("FROM SERVER: " + message);
 				} else {
@@ -87,6 +90,29 @@ public class TinyphoneClient extends Thread {
 		invokeMethod("audioLevelEvent", event,false);
 	}
 
+	private void handleSMS(TinyphoneEvent event){
+		String[] kv = event.getValue().split("\\|");
+		String callerNumber = kv[0];
+		event.setCallerNumber(callerNumber);
+		//create caller label, which can be used for privacy
+		if (callerNumber.length()>7){
+			int start = callerNumber.length()-7;
+			StringBuilder sb = new StringBuilder(callerNumber);
+			sb.replace(start, start+3, "xxx");
+			event.setCallerLabel(sb.toString());
+		}
+		if (kv.length > 1){
+			try {
+				event.setValue(URLDecoder.decode(kv[1], "utf-8"));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				event.setValue(kv[1]);
+			}
+		}
+		invokeMethod("smsEvent", event,false);
+	}
+	
 	private void handleNewCaller(TinyphoneEvent event) {
 		String[] kv = event.getValue().split("\\|");
 		String callerNumber = kv[0];

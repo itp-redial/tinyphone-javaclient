@@ -26,6 +26,12 @@ public class SimpleApp {
 		System.out.println("keypress Reflection worked!");
 		System.out.println(event.toString());
 	}
+	
+	//called by tinyphone client when there's a new key press (optional)
+	public void smsEvent(TinyphoneEvent event){
+		System.out.println("SMS Reflection worked!");
+		System.out.println(event.toString());
+	}
 	//called by tinyphone client when a caller hangs up (required)
 	public void hangupEvent(TinyphoneEvent event){
 		System.out.println("hangup Reflection worked!");
@@ -33,6 +39,9 @@ public class SimpleApp {
 	}
 	
 	public static void main(String[] args){
-		SimpleApp sa = new SimpleApp("ast1.itp-redial.com",12002,"13605162008");
+		//params are host, port, phone number
+		SimpleApp phone = new SimpleApp("your-server.com",12002,"1(917)831-4900");
+		SimpleApp sms = new SimpleApp("your-server.com",12002,"13602266800");
+		
 	}
 }

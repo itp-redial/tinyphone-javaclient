@@ -2,7 +2,7 @@ package com.itpredial.tinyphone.client;
 
 public class TinyphoneEvent {
 	
-	public enum EventType {NEW_CALLER,AUDIO_LEVEL,KEYPRESS,HANGUP}
+	public enum EventType {NEW_CALLER,AUDIO_LEVEL,KEYPRESS,HANGUP,SMS}
 	String id;
 	String callerNumber;
 	String callerLabel;
@@ -73,6 +73,8 @@ public class TinyphoneEvent {
 			this.eventType = EventType.AUDIO_LEVEL;
 		}else if (eventType.startsWith("han")){
 			this.eventType = EventType.HANGUP;
+		}else if (eventType.startsWith("sms")){
+			this.eventType = EventType.SMS;
 		}
 	}
 	
@@ -95,7 +97,7 @@ public class TinyphoneEvent {
 	
 	public String toString(){
 		String str = "Tinyphone Event "+eventType+": id="+id;
-		if (eventType.equals(EventType.NEW_CALLER)){
+		if (eventType.equals(EventType.NEW_CALLER) || eventType.equals(EventType.SMS)){
 			str += "\n   caller Number="+callerNumber;
 			str += ", caller Label="+callerLabel+"\n";
 			if (args != null){
@@ -105,6 +107,9 @@ public class TinyphoneEvent {
 				}
 				str = str.substring(0,str.length()-1);
 				str +="]";
+			}
+			if (eventType.equals(EventType.SMS)){
+				str += "message: "+value;
 			}
 		} else {
 			str +=", value="+value;
