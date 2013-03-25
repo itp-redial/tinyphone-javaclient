@@ -81,3 +81,11 @@ The Tinyphone Java/Processing library uses Java Reflection to trigger call event
   - Audio level events must be enabled in the Asterisk dial plan.  If enabled, they will trigger about 15 times a second.
  - public void hangupEvent(TinyphoneEvent event)
   - The caller has hung up the phone.  You may want to remove the caller from your app at this point.
+
+Tinyphone can also receive SMS from the Tinyphone Server
+ - public void smsEvent(TinyphoneEvent event)
+   - String id: This is a unique ID for the SMS.  This is generally used as the key in a Hashmap of SMS.
+   - String callerNumber: The SMS sender's phone number (callerID).
+   - String callerLabel: An obscured version of the sender's phone number, suitable for display.
+   - String value: The SMS message text.
+ 

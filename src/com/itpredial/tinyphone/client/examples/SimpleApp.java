@@ -27,7 +27,7 @@ public class SimpleApp {
 		System.out.println(event.toString());
 	}
 	
-	//called by tinyphone client when there's a new key press (optional)
+	//called by tinyphone client when there's SMS (optional)
 	public void smsEvent(TinyphoneEvent event){
 		System.out.println("SMS Reflection worked!");
 		System.out.println(event.toString());
